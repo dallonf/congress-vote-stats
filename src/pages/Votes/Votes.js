@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import request from 'request-promise';
 
 const apiKey = process.env.REACT_APP_PROPUBLICA_API_KEY;
@@ -29,7 +30,7 @@ class VotesController extends React.Component {
   render() {
     const { data, error } = this.state;
     if (data) {
-      return <pre>{JSON.stringify(data, null, 2)}</pre>;
+      return <VotesView data={data} />;
     } else if (error) {
       return <div style={{ color: 'red' }}>Error!</div>;
     } else {
@@ -37,5 +38,19 @@ class VotesController extends React.Component {
     }
   }
 }
+
+const VoteItemContainer = styled.div`
+  margin: 16px;
+  padding: 16px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+`;
+
+const VotesView = ({ data }) =>
+  console.log(data) ||
+  data.results.votes.map(v => (
+    <VoteItemContainer key={v.vote_uri}>
+      {(v.bill && v.bill.title) || v.question}
+    </VoteItemContainer>
+  ));
 
 export default VotesController;
