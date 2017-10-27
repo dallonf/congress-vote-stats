@@ -1,20 +1,16 @@
 import React from 'react';
-import Color from 'color';
 import * as d3 from 'd3';
+import Color from 'color';
+import { PARTY_COLORS, NO_VOTE_PATTERNS } from '../../styles';
 
 const SIZE = 100;
 
-const COLORS = {
-  R: '#ff0000',
-  D: '#0000ff',
-  I: '#ffff00',
-};
-
 const fillForParty = (party, vote) => {
-  const partyColor = COLORS[party];
+  const partyColor = PARTY_COLORS[party];
   if (vote) {
     return partyColor;
   } else {
+    return NO_VOTE_PATTERNS[party].url();
     return Color(partyColor)
       .darken(0.5)
       .hex();
@@ -33,8 +29,8 @@ const VotePieChart = ({
   const data = [
     { party: 'R', vote: true, value: repYes },
     { party: 'R', vote: false, value: repNo },
-    { party: 'D', vote: true, value: demYes },
     { party: 'D', vote: false, value: demNo },
+    { party: 'D', vote: true, value: demYes },
     { party: 'I', vote: true, value: indYes },
     { party: 'I', vote: false, value: indNo },
   ];
@@ -55,7 +51,7 @@ const VotePieChart = ({
             key={d.index}
             fill={fillForParty(d.data.party, d.data.vote)}
             d={arcGen(d)}
-            strokeWidth={2}
+            strokeWidth={1}
             stroke="white"
           />
         ))}
