@@ -1,7 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import request from 'request-promise';
-import PieChart from './PieChart';
+import VoteItem from './VoteItem';
 
 const apiKey = process.env.REACT_APP_PROPUBLICA_API_KEY;
 if (!apiKey)
@@ -40,32 +39,8 @@ class VotesController extends React.Component {
   }
 }
 
-const VoteItemContainer = styled.div`
-  margin: 16px;
-  padding: 16px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-areas: 'chart body';
-`;
-
 const VotesView = ({ data }) =>
   console.log(data) ||
-  data.results.votes.map(v => (
-    <VoteItemContainer key={v.vote_uri}>
-      <PieChart
-        style={{ gridArea: 'chart' }}
-        repYes={v.republican.yes}
-        repNo={v.republican.no}
-        demYes={v.democratic.yes}
-        demNo={v.democratic.no}
-        indYes={v.independent.yes}
-        indNo={v.independent.no}
-      />
-      <div style={{ gridArea: 'body' }}>
-        {(v.bill && v.bill.title) || v.question}
-      </div>
-    </VoteItemContainer>
-  ));
+  data.results.votes.map(v => <VoteItem key={v.vote_uri} vote={v} />);
 
 export default VotesController;

@@ -11,9 +11,6 @@ const fillForParty = (party, vote) => {
     return partyColor;
   } else {
     return NO_VOTE_PATTERNS[party].url();
-    return Color(partyColor)
-      .darken(0.5)
-      .hex();
   }
 };
 

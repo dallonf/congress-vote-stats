@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`computes a (slightly) more bipartisan Republican vote 1`] = `
+Object {
+  "party": "R",
+  "value": 0.5935828877005347,
+}
+`;
