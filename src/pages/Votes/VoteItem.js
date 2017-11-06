@@ -26,6 +26,20 @@ const RatingContainer = styled.div`
   margin-top: 0.25em;
 `;
 
+const BodyContainer = styled.div`grid-area: body;`;
+
+const MetaHeader = styled.div`
+  text-transform: uppercase;
+  color: #999999;
+  font-size: 0.75em;
+  margin-bottom: 0.25em;
+`;
+
+const BillHeader = styled.div`margin-bottom: 1em;`;
+
+const VoteDescription = styled.div`margin-bottom: 0.25em;`;
+const VoteResult = styled.div``;
+
 const formatPercent = num =>
   num.toLocaleString(undefined, { style: 'percent', maximumFractionDigits: 1 });
 
@@ -51,16 +65,21 @@ const VoteItem = ({ vote }) => {
   let body = null;
   if (vote.bill) {
     header = (
-      <div>
-        <div>
-          {vote.bill.number} {vote.bill.title}
-        </div>
-        <div>{vote.description}</div>
-      </div>
+      <BillHeader>
+        {vote.bill.number} - {vote.bill.title}
+      </BillHeader>
     );
     body = (
       <div>
-        {vote.question} - {vote.result}
+        <VoteDescription>{vote.description}</VoteDescription>
+        <VoteResult>
+          {vote.question} -{' '}
+          <i
+            className={`fa fa-${vote.result === 'Failed' ? 'times' : 'check'}`}
+            style={{ marginRight: '0.25em' }}
+          />
+          <strong>{vote.result}</strong>
+        </VoteResult>
       </div>
     );
   } else {
@@ -81,14 +100,14 @@ const VoteItem = ({ vote }) => {
         />
       </ChartContainer>
       <RatingContainer>{ratingView}</RatingContainer>
-      <div style={{ gridArea: 'body' }}>
-        <div>
+      <BodyContainer>
+        <MetaHeader>
           {vote.chamber} -{' '}
           <span title={voteTime.format('l LT z')}>{voteTime.fromNow()}</span>
-        </div>
+        </MetaHeader>
         {header}
         {body}
-      </div>
+      </BodyContainer>
     </VoteItemContainer>
   );
 };
