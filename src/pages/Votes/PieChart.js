@@ -14,6 +14,8 @@ const fillForParty = (party, vote) => {
   }
 };
 
+const MINIMUM_SLICE_PERCENT = 0.0125;
+
 const VotePieChart = ({
   style,
   repYes,
@@ -31,10 +33,21 @@ const VotePieChart = ({
     { party: 'I', vote: true, value: indYes },
     { party: 'I', vote: false, value: indNo },
   ];
+  const totalVotes = data.reduce((sum, next) => sum + next.value, 0);
   const pieGen = d3
     .pie()
     .sort(null)
-    .value(d => d.value);
+    .value(d => {
+      const value = d.value;
+      // Small groups of votes are statistically interesting
+      // but hard to see. Make sure there's a minimum size for
+      // slices
+      if (value > 0 && value / totalVotes < MINIMUM_SLICE_PERCENT) {
+        return totalVotes * MINIMUM_SLICE_PERCENT;
+      } else {
+        return value;
+      }
+    });
   const arcGen = d3
     .arc()
     .outerRadius(SIZE * 0.45)

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment-timezone';
 import PieChart from './PieChart';
 import { getPartisanRating } from '../../math/partisanVote';
 
@@ -8,12 +9,25 @@ const VoteItemContainer = styled.div`
   padding: 16px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
   display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-areas: 'chart body' 'rating body';
+  grid-template-columns: 150px 16px 1fr;
+  grid-template-areas: 'chart . body' 'rating . body' '. . body';
+`;
+
+const ChartContainer = styled.div`
+  grid-area: chart;
+  justify-self: center;
+  align-self: center;
+`;
+
+const RatingContainer = styled.div`
+  grid-area: rating;
+  justify-self: center;
+  align-self: start;
+  margin-top: 0.25em;
 `;
 
 const formatPercent = num =>
-  num.toLocaleString(undefined, { style: 'percent' });
+  num.toLocaleString(undefined, { style: 'percent', maximumFractionDigits: 1 });
 
 const VoteItem = ({ vote }) => {
   const rating = getPartisanRating({
@@ -28,22 +42,52 @@ const VoteItem = ({ vote }) => {
   } else if (rating.party === 'D') {
     ratingView = `${formatPercent(rating.value)} Democratic`;
   } else {
-    ratingView = vote.result === 'Passed' ? 'Bipartisan' : 'Non-partisan';
+    ratingView = vote.result === 'Failed' ? 'Non-partisan' : 'Bipartisan';
   }
+
+  const voteTime = moment.tz(`${vote.date} ${vote.time}`, 'America/New_York');
+
+  let header = null;
+  let body = null;
+  if (vote.bill) {
+    header = (
+      <div>
+        <div>
+          {vote.bill.number} {vote.bill.title}
+        </div>
+        <div>{vote.description}</div>
+      </div>
+    );
+    body = (
+      <div>
+        {vote.question} - {vote.result}
+      </div>
+    );
+  } else {
+    body = <pre>{JSON.stringify(vote, null, 2)}</pre>;
+  }
+
   return (
     <VoteItemContainer>
-      <PieChart
-        style={{ gridArea: 'chart' }}
-        repYes={vote.republican.yes}
-        repNo={vote.republican.no}
-        demYes={vote.democratic.yes}
-        demNo={vote.democratic.no}
-        indYes={vote.independent.yes}
-        indNo={vote.independent.no}
-      />
-      <div style={{ gridArea: 'rating' }}>{ratingView}</div>
+      <ChartContainer>
+        <PieChart
+          style={{ gridArea: 'chart' }}
+          repYes={vote.republican.yes}
+          repNo={vote.republican.no}
+          demYes={vote.democratic.yes}
+          demNo={vote.democratic.no}
+          indYes={vote.independent.yes}
+          indNo={vote.independent.no}
+        />
+      </ChartContainer>
+      <RatingContainer>{ratingView}</RatingContainer>
       <div style={{ gridArea: 'body' }}>
-        {(vote.bill && vote.bill.title) || vote.question}
+        <div>
+          {vote.chamber} -{' '}
+          <span title={voteTime.format('l LT z')}>{voteTime.fromNow()}</span>
+        </div>
+        {header}
+        {body}
       </div>
     </VoteItemContainer>
   );
