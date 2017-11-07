@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment-timezone';
 import PieChart from './PieChart';
+import { PARTY_COLORS } from '../../styles';
 import { getPartisanRating } from '../../math/partisanVote';
 
 const VoteItemContainer = styled.div`
@@ -39,11 +40,27 @@ const BillHeader = styled.div`margin-bottom: 1em;`;
 
 const VoteDescription = styled.div`margin-bottom: 0.25em;`;
 const VoteResult = styled.div``;
+const PrevailingParty = styled.div`
+  margin-top: 1em;
+  color: ${props => PARTY_COLORS[props.party] || 'black'};
+`;
 
 const formatPercent = num =>
   num.toLocaleString(undefined, { style: 'percent', maximumFractionDigits: 1 });
 
+const getPrevailingParty = (supportingParty, passed) => {
+  if (!supportingParty) return null;
+  if (passed) return supportingParty;
+  if (!passed && supportingParty === 'R') {
+    return 'D';
+  } else if (!passed && supportingParty === 'D') {
+    return 'R';
+  }
+  return null;
+};
+
 const VoteItem = ({ vote }) => {
+  const passed = vote.result !== 'Failed';
   const rating = getPartisanRating({
     repYes: vote.republican.yes,
     repNo: vote.republican.no,
@@ -56,9 +73,14 @@ const VoteItem = ({ vote }) => {
   } else if (rating.party === 'D') {
     ratingView = `${formatPercent(rating.value)} Democratic`;
   } else {
-    ratingView = vote.result === 'Failed' ? 'Non-partisan' : 'Bipartisan';
+    ratingView = passed ? 'Bipartisan' : 'Non-partisan';
   }
 
+  const prevailingParty = getPrevailingParty(rating.party, passed);
+  const prevailingPartyName =
+    prevailingParty === 'R'
+      ? 'Republican'
+      : prevailingParty === 'D' ? 'Democratic' : null;
   const voteTime = moment.tz(`${vote.date} ${vote.time}`, 'America/New_York');
 
   let header = null;
@@ -90,10 +112,15 @@ const VoteItem = ({ vote }) => {
       <VoteResult>
         {vote.question} - <strong>{vote.result}</strong>
         <i
-          className={`fa fa-${vote.result === 'Failed' ? 'times' : 'check'}`}
+          className={`fa fa-${passed ? 'check' : 'times'}`}
           style={{ marginLeft: '0.25em' }}
         />
       </VoteResult>
+      {prevailingParty && (
+        <PrevailingParty party={prevailingParty}>
+          Prevailing Party: {prevailingPartyName}
+        </PrevailingParty>
+      )}
     </div>
   );
 
