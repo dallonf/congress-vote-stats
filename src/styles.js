@@ -23,7 +23,7 @@ export const NO_VOTE_PATTERNS = mapValues(PARTY_COLORS, c =>
 );
 
 export const SvgPatterns = () => (
-  <svg>
+  <svg style={{ width: 0, height: 0 }}>
     <defs
       dangerouslySetInnerHTML={{
         __html: Object.keys(NO_VOTE_PATTERNS)
