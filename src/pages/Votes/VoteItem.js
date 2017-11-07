@@ -63,28 +63,39 @@ const VoteItem = ({ vote }) => {
 
   let header = null;
   let body = null;
-  if (vote.bill) {
+  if (vote.bill && vote.bill.title) {
     header = (
       <BillHeader>
         {vote.bill.number} - {vote.bill.title}
       </BillHeader>
     );
-    body = (
-      <div>
-        <VoteDescription>{vote.description}</VoteDescription>
-        <VoteResult>
-          {vote.question} -{' '}
-          <i
-            className={`fa fa-${vote.result === 'Failed' ? 'times' : 'check'}`}
-            style={{ marginRight: '0.25em' }}
-          />
-          <strong>{vote.result}</strong>
-        </VoteResult>
-      </div>
-    );
-  } else {
-    body = <pre>{JSON.stringify(vote, null, 2)}</pre>;
   }
+  // IDEA: Provide a tooltip for some of the stranger vote questions:
+  // - On Approving the Journal: This vote really doesn't matter. Congresspeople
+  // will often use it to skew their own statistics of voting with/against the party.
+  // I may filter these out in the future.
+  // - On the Cloture Motion: A motion to limit debate to 30 additional hours. Usually
+  // intended to block a filibuster.
+  // - On Motion to Recommit with Instructions: This vote, taken just before the final
+  // vote on the bill, gives the House (usually the minority party) one last chance
+  // to amend the bill.
+  // - (Recommit without Instructions? Haven't seen this): This vote, taken just before
+  // the final vote on the bill, gives the House (usually the minority party) one last
+  // chance to send the bill back for further debate and consideration.
+  body = (
+    <div>
+      {vote.description && (
+        <VoteDescription>{vote.description}</VoteDescription>
+      )}
+      <VoteResult>
+        {vote.question} - <strong>{vote.result}</strong>
+        <i
+          className={`fa fa-${vote.result === 'Failed' ? 'times' : 'check'}`}
+          style={{ marginLeft: '0.25em' }}
+        />
+      </VoteResult>
+    </div>
+  );
 
   return (
     <VoteItemContainer>
