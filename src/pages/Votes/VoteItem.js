@@ -45,24 +45,8 @@ const VoteQuestion = styled.abbr`
   border-bottom: black 1px dotted;
 `;
 
-const PrevailingParty = styled.div`
-  margin-top: 1em;
-  color: ${props => PARTY_COLORS[props.party] || 'black'};
-`;
-
 const formatPercent = num =>
   num.toLocaleString(undefined, { style: 'percent', maximumFractionDigits: 1 });
-
-const getPrevailingParty = (supportingParty, passed) => {
-  if (!supportingParty) return null;
-  if (passed) return supportingParty;
-  if (!passed && supportingParty === 'R') {
-    return 'D';
-  } else if (!passed && supportingParty === 'D') {
-    return 'R';
-  }
-  return null;
-};
 
 const VoteItem = ({ vote }) => {
   const passed = vote.result !== 'Failed';
@@ -81,11 +65,6 @@ const VoteItem = ({ vote }) => {
     ratingView = passed ? 'Bipartisan' : 'Non-partisan';
   }
 
-  const prevailingParty = getPrevailingParty(rating.party, passed);
-  const prevailingPartyName =
-    prevailingParty === 'R'
-      ? 'Republican'
-      : prevailingParty === 'D' ? 'Democratic' : null;
   const voteTime = moment.tz(`${vote.date} ${vote.time}`, 'America/New_York');
 
   let header = null;
@@ -141,11 +120,6 @@ const VoteItem = ({ vote }) => {
           style={{ marginLeft: '0.25em' }}
         />
       </VoteResult>
-      {prevailingParty && (
-        <PrevailingParty party={prevailingParty}>
-          Prevailing Party: {prevailingPartyName}
-        </PrevailingParty>
-      )}
     </div>
   );
 
