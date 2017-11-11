@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import VotesPage from './pages/Votes/Votes';
+import VotesPage from './pages/Votes/VotesPage';
 import { SvgPatterns } from './styles';
 
 class App extends Component {
