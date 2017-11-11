@@ -5,9 +5,8 @@ const Explanation = () => (
     <p>
       My goal with this application is to visualize the current hyperpartisan
       political climate. It's jarring just how many votes fall right down party
-      lines. Makes you wonder how we can really make the country a better place
-      for everyone if every measure is opposed by nearly half of the country's
-      representatives...
+      lines. How can we make the country a better place for everyone if we only
+      "win" by defeating the other half of the country?
     </p>
   </div>
 );

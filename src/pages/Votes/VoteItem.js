@@ -35,6 +35,7 @@ const RatingContainer = styled.div`margin-top: 0.25em;`;
 const HeaderContainer = styled.div`
   grid-area: header;
   margin-bottom: 1em;
+  max-width: 800px;
 `;
 
 const BodyContainer = styled.div`
