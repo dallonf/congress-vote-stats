@@ -6,24 +6,35 @@ import { PARTY_COLORS } from '../../styles';
 import { getPartisanRating } from '../../math/partisanVote';
 
 const VoteItemContainer = styled.div`
-  padding: 16px;
-  border-bottom: #ccc 1px solid;
+  padding: 32px 16px;
   display: grid;
-  grid-template-columns: 150px 16px 1fr;
-  grid-template-areas: 'chart . body' 'rating . body' '. . body';
+  grid-template-areas: 'header' 'chart' 'body';
+  border-bottom: 1px #ccc solid;
+
+  @media screen and (min-width: 700px) {
+    border-bottom: none;
+    grid-template-columns: 150px 16px 1fr;
+    grid-template-areas: 'chart . header' 'chart . body' '. . body';
+  }
 `;
 
 const ChartContainer = styled.div`
   grid-area: chart;
   justify-self: center;
   align-self: center;
+  text-align: center;
+  margin-bottom: 1em;
+
+  @media screen and (min-width: 700px) {
+    margin-bottom: 0;
+  }
 `;
 
-const RatingContainer = styled.div`
-  grid-area: rating;
-  justify-self: center;
-  align-self: start;
-  margin-top: 0.25em;
+const RatingContainer = styled.div`margin-top: 0.25em;`;
+
+const HeaderContainer = styled.div`
+  grid-area: header;
+  margin-bottom: 1em;
 `;
 
 const BodyContainer = styled.div`
@@ -38,7 +49,7 @@ const MetaHeader = styled.div`
   margin-bottom: 0.25em;
 `;
 
-const BillHeader = styled.div`margin-bottom: 1em;`;
+const BillHeader = styled.div``;
 
 const VoteDescription = styled.div`margin-bottom: 0.25em;`;
 const VoteResult = styled.div``;
@@ -125,6 +136,11 @@ const VoteItem = ({ vote }) => {
     </div>
   );
 
+  const formattedVoteTime = voteTime.format('l LT z');
+  const glanceVoteTime = voteTime.isAfter(moment().subtract(1, 'month'))
+    ? voteTime.fromNow()
+    : voteTime.format('MMMM D');
+
   return (
     <VoteItemContainer>
       <ChartContainer>
@@ -137,16 +153,16 @@ const VoteItem = ({ vote }) => {
           indYes={vote.independent.yes}
           indNo={vote.independent.no}
         />
+        <RatingContainer>{ratingView}</RatingContainer>
       </ChartContainer>
-      <RatingContainer>{ratingView}</RatingContainer>
-      <BodyContainer>
+      <HeaderContainer>
         <MetaHeader>
           {vote.chamber} -{' '}
-          <span title={voteTime.format('l LT z')}>{voteTime.fromNow()}</span>
+          <span title={formattedVoteTime}>{glanceVoteTime}</span>
         </MetaHeader>
         {header}
-        {body}
-      </BodyContainer>
+      </HeaderContainer>
+      <BodyContainer>{body}</BodyContainer>
     </VoteItemContainer>
   );
 };
