@@ -11,6 +11,7 @@ const OptionHeader = styled.div`
   padding: 16px;
   background: white;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+  z-index: 1;
 `;
 
 class VotePage extends React.Component {
