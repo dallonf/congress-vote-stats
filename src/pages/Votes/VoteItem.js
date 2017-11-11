@@ -6,9 +6,8 @@ import { PARTY_COLORS } from '../../styles';
 import { getPartisanRating } from '../../math/partisanVote';
 
 const VoteItemContainer = styled.div`
-  margin: 16px;
   padding: 16px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
+  border-bottom: #ccc 1px solid;
   display: grid;
   grid-template-columns: 150px 16px 1fr;
   grid-template-areas: 'chart . body' 'rating . body' '. . body';
@@ -27,7 +26,10 @@ const RatingContainer = styled.div`
   margin-top: 0.25em;
 `;
 
-const BodyContainer = styled.div`grid-area: body;`;
+const BodyContainer = styled.div`
+  grid-area: body;
+  max-width: 800px;
+`;
 
 const MetaHeader = styled.div`
   text-transform: uppercase;
@@ -49,7 +51,7 @@ const formatPercent = num =>
   num.toLocaleString(undefined, { style: 'percent', maximumFractionDigits: 1 });
 
 const VoteItem = ({ vote }) => {
-  const passed = vote.result !== 'Failed';
+  const passed = vote.result !== 'Failed' && vote.result !== 'Rejected';
   const rating = getPartisanRating({
     repYes: vote.republican.yes,
     repNo: vote.republican.no,

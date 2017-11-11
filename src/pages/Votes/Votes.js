@@ -8,6 +8,24 @@ const LoadingWrapper = styled.div`
   opacity: ${props => (props.loading ? '0.6' : '1')};
 `;
 
+const LoadingView = styled.div`
+  padding: 16px;
+  font-size: 2em;
+  text-align: center;
+`;
+
+const Error = styled.div`
+  padding: 16px;
+  text-align: left;
+`;
+
+const ErrorHeading = styled.h2`
+  line-height: 1;
+  margin-top: 0;
+  font-size: 2em;
+  color: orange;
+`;
+
 const apiKey = process.env.REACT_APP_PROPUBLICA_API_KEY;
 if (!apiKey)
   console.error(
@@ -76,7 +94,27 @@ class VotesController extends React.Component {
     if (error) {
       return (
         <LoadingWrapper loading={loading}>
-          <div style={{ color: 'red' }}>Error!</div>
+          <Error>
+            <ErrorHeading>Error</ErrorHeading>
+            {error.response ? (
+              <p>
+                Some months have bad data, unfortunately. Try another month.
+              </p>
+            ) : (
+              <p>
+                Couldn't load votes.{' '}
+                <a
+                  href="#"
+                  onClick={e => {
+                    e.preventDefault();
+                    this.fetch();
+                  }}
+                >
+                  Try again
+                </a>
+              </p>
+            )}
+          </Error>
         </LoadingWrapper>
       );
     } else if (data) {
@@ -86,7 +124,7 @@ class VotesController extends React.Component {
         </LoadingWrapper>
       );
     } else {
-      return 'Loading...';
+      return <LoadingView>Loading...</LoadingView>;
     }
   }
 }
