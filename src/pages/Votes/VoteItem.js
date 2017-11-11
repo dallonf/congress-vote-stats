@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment-timezone';
 import PieChart from './PieChart';
-import { PARTY_COLORS } from '../../styles';
 import { getPartisanRating } from '../../math/partisanVote';
 
 const VoteItemContainer = styled.div`
@@ -113,6 +112,8 @@ const VoteItem = ({ vote }) => {
     // - (Recommit without Instructions? Haven't seen this): This vote, taken just before
     // the final vote on the bill, gives the House (usually the minority party) one last
     // chance to send the bill back for further debate and consideration.
+    default:
+      break;
   }
 
   body = (

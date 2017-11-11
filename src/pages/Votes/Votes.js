@@ -104,7 +104,7 @@ class VotesController extends React.Component {
               <p>
                 Couldn't load votes.{' '}
                 <a
-                  href="#"
+                  href={window.location.href}
                   onClick={e => {
                     e.preventDefault();
                     this.fetch();

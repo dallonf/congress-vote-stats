@@ -1,6 +1,5 @@
 import React from 'react';
 import * as d3 from 'd3';
-import Color from 'color';
 import { PARTY_COLORS, NO_VOTE_PATTERNS } from '../../styles';
 
 const SIZE = 100;

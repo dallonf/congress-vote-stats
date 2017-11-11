@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import qs from 'query-string';
-import { Route, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 import Votes from './Votes';
 
 const START_DATE = '1991-01-01';
