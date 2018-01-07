@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment-timezone';
 import PieChart from './PieChart';
-import { getPartisanRating } from '../../math/partisanVote';
+import { getPartisanRatingForVote } from '../../math/partisanVote';
 
 const VoteItemContainer = styled.div`
   padding: 32px 16px;
@@ -29,7 +29,9 @@ const ChartContainer = styled.div`
   }
 `;
 
-const RatingContainer = styled.div`margin-top: 0.25em;`;
+const RatingContainer = styled.div`
+  margin-top: 0.25em;
+`;
 
 const HeaderContainer = styled.div`
   grid-area: header;
@@ -51,7 +53,9 @@ const MetaHeader = styled.div`
 
 const BillHeader = styled.div``;
 
-const VoteDescription = styled.div`margin-bottom: 0.25em;`;
+const VoteDescription = styled.div`
+  margin-bottom: 0.25em;
+`;
 const VoteResult = styled.div``;
 const VoteQuestion = styled.abbr`
   text-decoration: none;
@@ -62,13 +66,11 @@ const formatPercent = num =>
   num.toLocaleString(undefined, { style: 'percent', maximumFractionDigits: 1 });
 
 const VoteItem = ({ vote }) => {
-  const passed = vote.result !== 'Failed' && vote.result !== 'Rejected';
-  const rating = getPartisanRating({
-    repYes: vote.republican.yes,
-    repNo: vote.republican.no,
-    demYes: vote.democratic.yes,
-    demNo: vote.democratic.no,
-  });
+  const passed =
+    vote.result !== 'Failed' &&
+    vote.result.indexOf('Rejected') === -1 &&
+    vote.result !== 'Point of Order Not Well Taken';
+  const rating = getPartisanRatingForVote(vote);
   let ratingView;
   if (rating.party === 'R') {
     ratingView = `${formatPercent(rating.value)} Republican`;

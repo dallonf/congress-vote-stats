@@ -10,3 +10,11 @@ export const getPartisanRating = ({ repYes, repNo, demYes, demNo }) => {
     return { party: null, value: 0 };
   }
 };
+
+export const getPartisanRatingForVote = vote =>
+  getPartisanRating({
+    repYes: vote.republican.yes,
+    repNo: vote.republican.no,
+    demYes: vote.democratic.yes,
+    demNo: vote.democratic.no,
+  });

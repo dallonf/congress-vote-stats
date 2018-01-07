@@ -5,6 +5,7 @@ import qs from 'query-string';
 import { withRouter } from 'react-router';
 import Votes from './Votes';
 import VotesController from './VotesController';
+import AggregateStats from './AggregateStats';
 
 const START_DATE = '1991-01-01';
 
@@ -15,6 +16,12 @@ const OptionHeader = styled.div`
   background: white;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
   z-index: 1;
+  display: flex;
+  flex-flow: row nowrap;
+`;
+
+const Spacer = styled.div`
+  flex: 1;
 `;
 
 class VotePage extends React.Component {
@@ -74,6 +81,8 @@ class VotePage extends React.Component {
                   );
                 })}
               </select>
+              <Spacer />
+              {data && <AggregateStats votes={data.results.votes} />}
             </OptionHeader>
             <div>
               <Votes loading={loading} data={data} error={error} />
