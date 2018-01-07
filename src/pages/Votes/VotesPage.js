@@ -4,6 +4,7 @@ import moment from 'moment';
 import qs from 'query-string';
 import { withRouter } from 'react-router';
 import Votes from './Votes';
+import VotesController from './VotesController';
 
 const START_DATE = '1991-01-01';
 
@@ -17,8 +18,6 @@ const OptionHeader = styled.div`
 `;
 
 class VotePage extends React.Component {
-  // state = { month: moment().get('month'), year: moment().get('year') };
-
   render() {
     const { location, history } = this.props;
     const params = qs.parse(location.search);
@@ -44,38 +43,44 @@ class VotePage extends React.Component {
     const selected = moment({ month, year }).format('YYYY-MM');
 
     return (
-      <div>
-        <OptionHeader>
-          Show votes for:{' '}
-          <select
-            value={selected}
-            onChange={e => {
-              const newSelection = e.target.value;
-              const selectionMoment = moment(newSelection, 'YYYY-MM');
-              history.push({
-                ...location,
-                search: qs.stringify({
-                  month: selectionMoment.get('month') + 1,
-                  year: selectionMoment.get('year'),
-                }),
-              });
-            }}
-          >
-            {options.map(o => {
-              const monthMoment = moment({ month: o.month, year: o.year });
-              const value = monthMoment.format('YYYY-MM');
-              return (
-                <option value={value} key={value}>
-                  {monthMoment.format('MMMM YYYY')}
-                </option>
-              );
-            })}
-          </select>
-        </OptionHeader>
-        <div>
-          <Votes month={month + 1} year={year} />
-        </div>
-      </div>
+      <VotesController
+        month={month + 1}
+        year={year}
+        render={({ loading, data, error }) => (
+          <div>
+            <OptionHeader>
+              Show votes for:{' '}
+              <select
+                value={selected}
+                onChange={e => {
+                  const newSelection = e.target.value;
+                  const selectionMoment = moment(newSelection, 'YYYY-MM');
+                  history.push({
+                    ...location,
+                    search: qs.stringify({
+                      month: selectionMoment.get('month') + 1,
+                      year: selectionMoment.get('year'),
+                    }),
+                  });
+                }}
+              >
+                {options.map(o => {
+                  const monthMoment = moment({ month: o.month, year: o.year });
+                  const value = monthMoment.format('YYYY-MM');
+                  return (
+                    <option value={value} key={value}>
+                      {monthMoment.format('MMMM YYYY')}
+                    </option>
+                  );
+                })}
+              </select>
+            </OptionHeader>
+            <div>
+              <Votes loading={loading} data={data} error={error} />
+            </div>
+          </div>
+        )}
+      />
     );
   }
 }
