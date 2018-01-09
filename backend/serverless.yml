@@ -90,6 +90,18 @@ functions:
 #    Define function environment variables here
 #    environment:
 #      variable2: value2
+  month:
+    handler: handler.getMonthStats
+    events:
+      - http:
+          path: congress-stats/year/{year}/month/{month}
+          method: GET
+          cors: true
+          request:
+            parameters:
+              paths:
+                year: true
+                month: true
 
 # you can add CloudFormation resource templates here
 #resources:
