@@ -39,7 +39,10 @@ const VotesView = ({ data, loading, error, refetch }) => {
         <Error>
           <ErrorHeading>Error</ErrorHeading>
           {error.response ? (
-            <p>Some months have bad data, unfortunately. Try another month.</p>
+            <p>
+              Couldn't load votes. Some months have bad data, unfortunately. Try
+              another month.
+            </p>
           ) : (
             <p>
               Couldn't load votes.{' '}

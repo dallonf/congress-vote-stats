@@ -11,6 +11,7 @@ if (!apiKey)
 
 module.exports.getMonthStats = (event, context, callback) => {
   const { month, year } = event.pathParameters;
+  const headers = { 'Access-Control-Allow-Origin': '*' };
 
   const dataPromise = request
     .get(
@@ -37,10 +38,12 @@ module.exports.getMonthStats = (event, context, callback) => {
     .then(
       data => ({
         statusCode: 200,
+        headers,
         body: JSON.stringify(data),
       }),
       err => ({
         statusCode: 500,
+        headers,
         body: JSON.stringify(err.response || { message: err.message }),
       })
     );
