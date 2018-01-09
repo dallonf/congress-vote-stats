@@ -102,6 +102,8 @@ functions:
               paths:
                 year: true
                 month: true
+    environment:
+      PROPUBLICA_API_KEY: ${file(./env.yml):propublicaApiKey}
 
 # you can add CloudFormation resource templates here
 #resources:
