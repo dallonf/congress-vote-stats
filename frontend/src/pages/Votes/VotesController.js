@@ -1,12 +1,9 @@
 import React from 'react';
 import request from 'request-promise';
-import padStart from 'pad-start';
 
-const apiKey = process.env.REACT_APP_PROPUBLICA_API_KEY;
-if (!apiKey)
-  console.error(
-    'Required environment variable "REACT_APP_PROPUBLICA_API_KEY" is missing!'
-  );
+const apiBase = process.env.REACT_APP_API;
+if (!apiBase)
+  console.error('Required environment variable "REACT_APP_API" is missing!');
 
 class VotesController extends React.Component {
   state = { data: null, error: null };
@@ -37,26 +34,8 @@ class VotesController extends React.Component {
     this.setState({ loading: true });
     const { month, year } = props;
     const req = request
-      .get(
-        `https://api.propublica.org/congress/v1/both/votes/${year}/${padStart(
-          month,
-          2,
-          '0'
-        )}.json`,
-        {
-          headers: { 'X-API-Key': apiKey },
-          json: true,
-        }
-      )
-      .then(data => {
-        // ProPublica returns 200 OK with an error status code in the body.
-        if (data.status !== 'OK') {
-          throw Object.assign(new Error(data.error || 'Could not get votes'), {
-            response: data,
-          });
-        } else {
-          return data;
-        }
+      .get(`${apiBase}/year/${year}/month/${month}`, {
+        json: true,
       })
       .then(
         data => this.setState({ data, error: null, loading: false }),
