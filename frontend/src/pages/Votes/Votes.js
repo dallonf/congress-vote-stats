@@ -32,7 +32,7 @@ const ErrorHeading = styled.h2`
   color: orange;
 `;
 
-const VotesView = ({ data, loading, error }) => {
+const VotesView = ({ data, loading, error, refetch }) => {
   if (error) {
     return (
       <LoadingWrapper loading={loading}>
@@ -47,7 +47,7 @@ const VotesView = ({ data, loading, error }) => {
                 href={window.location.href}
                 onClick={e => {
                   e.preventDefault();
-                  this.fetch();
+                  refetch();
                 }}
               >
                 Try again

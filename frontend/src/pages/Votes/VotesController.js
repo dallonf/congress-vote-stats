@@ -27,7 +27,7 @@ class VotesController extends React.Component {
     }
   }
 
-  fetch(props = this.props) {
+  fetch = (props = this.props) => {
     if (this.reqInProgress) {
       this.reqInProgress.cancel();
     }
@@ -42,12 +42,12 @@ class VotesController extends React.Component {
         error => this.setState({ data: null, error, loading: false })
       );
     this.reqInProgress = req;
-  }
+  };
 
   render() {
     const { render } = this.props;
     const { data, error, loading } = this.state;
-    return render({ data, error, loading });
+    return render({ data, error, loading, refetch: this.fetch });
   }
 }
 

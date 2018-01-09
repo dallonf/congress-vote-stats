@@ -53,7 +53,7 @@ class VotePage extends React.Component {
       <VotesController
         month={month + 1}
         year={year}
-        render={({ loading, data, error }) => (
+        render={({ loading, data, error, refetch }) => (
           <div>
             <OptionHeader>
               Show votes for:{' '}
@@ -85,7 +85,12 @@ class VotePage extends React.Component {
               {data && <AggregateStats votes={data.results.votes} />}
             </OptionHeader>
             <div>
-              <Votes loading={loading} data={data} error={error} />
+              <Votes
+                loading={loading}
+                data={data}
+                error={error}
+                refetch={refetch}
+              />
             </div>
           </div>
         )}
