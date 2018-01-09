@@ -2,6 +2,7 @@
   "name": "congress-vote-stats",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://dallonf.github.io/congress-vote-stats",
   "dependencies": {
     "color": "^2.0.0",
     "d3": "^4.11.0",
@@ -21,9 +22,13 @@
     "virtual-dom-stringify": "^3.0.1"
   },
   "devDependencies": {
-    "react-scripts": "^1.0.17"
+    "gh-pages": "^1.1.0",
+    "react-scripts": "^1.0.17",
+    "source-map-explorer": "^1.5.0"
   },
   "scripts": {
+    "predeploy": "yarn run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
