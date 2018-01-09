@@ -3,21 +3,6 @@ const request = require('request-promise');
 const padStart = require('pad-start');
 const promiseFns = require('promise-fns');
 
-module.exports.hello = (event, context, callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  };
-
-  callback(null, response);
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
-};
-
 const apiKey = process.env.PROPUBLICA_API_KEY;
 if (!apiKey)
   throw new Error(
@@ -54,7 +39,7 @@ module.exports.getMonthStats = (event, context, callback) => {
         statusCode: 200,
         body: JSON.stringify(data),
       }),
-      error => ({
+      err => ({
         statusCode: 500,
         body: JSON.stringify(err.response || { message: err.message }),
       })
