@@ -17,11 +17,17 @@ const OptionHeader = styled.div`
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5);
   z-index: 1;
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
+
+  @media screen and (min-width: 700px) {
+    flex-flow: row nowrap;
+  }
 `;
 
 const Spacer = styled.div`
-  flex: 1;
+  @media screen and (min-width: 700px) {
+    flex: 1;
+  }
 `;
 
 class VotePage extends React.Component {
@@ -56,9 +62,10 @@ class VotePage extends React.Component {
         render={({ loading, data, error, refetch }) => (
           <div>
             <OptionHeader>
-              Show votes for:{' '}
+              <span style={{ margin: 4 }}>Show votes for: </span>
               <select
                 value={selected}
+                style={{ margin: 4 }}
                 onChange={e => {
                   const newSelection = e.target.value;
                   const selectionMoment = moment(newSelection, 'YYYY-MM');
@@ -82,7 +89,12 @@ class VotePage extends React.Component {
                 })}
               </select>
               <Spacer />
-              {data && <AggregateStats votes={data.results.votes} />}
+              {data && (
+                <AggregateStats
+                  style={{ margin: 4 }}
+                  votes={data.results.votes}
+                />
+              )}
             </OptionHeader>
             <div>
               <Votes
