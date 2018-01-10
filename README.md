@@ -1,5 +1,7 @@
 # congress-vote-stats
 
-This is me messing with the [ProPublica Congress API](https://www.propublica.org/datastore/api/propublica-congress-api) and data visualization in general. In particular, I'm interested in the polarization of the United States Congress and seeing just how many votes fall right along party lines.
+This is me messing with the [ProPublica Congress API](https://www.propublica.org/datastore/api/propublica-congress-api) and data visualization in general. In particular, I'm interested in the polarization of the United States Congress and seeing just how many votes fall right down party lines.
 
-This is all very work in progress here! If you want to check it out as is, you'll need a ProPublica API Key. Create a file called `.env.local` with the contents `REACT_APP_PROPUBLICA_API_KEY=[your API key]`. From there, it's a standard [Create React App](https://github.com/facebookincubator/create-react-app) project.
+If you want to mess around with the code yourself, there are two different modules, the backend and frontend. The frontend is a [Create React App](https://github.com/facebookincubator/create-react-app) project and the backend is a simple AWS Lambda function using the [Serverless Framework](https://serverless.com/framework/). Both of these will require some configuration to get started, so check out their READMEs.
+
+If you just want to see the result, it's hosted at https://dallonf.github.io/congress-vote-stats/.
