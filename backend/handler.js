@@ -1,7 +1,7 @@
-'use strict';
-const request = require('request-promise');
-const padStart = require('pad-start');
-const promiseFns = require('promise-fns');
+"use strict";
+const axios = require("axios");
+const padStart = require("pad-start");
+const promiseFns = require("promise-fns");
 
 const apiKey = process.env.PROPUBLICA_API_KEY;
 if (!apiKey)
@@ -11,24 +11,24 @@ if (!apiKey)
 
 module.exports.getMonthStats = (event, context, callback) => {
   const { month, year } = event.pathParameters;
-  const headers = { 'Access-Control-Allow-Origin': '*' };
+  const headers = { "Access-Control-Allow-Origin": "*" };
 
-  const dataPromise = request
+  const dataPromise = axios
     .get(
       `https://api.propublica.org/congress/v1/both/votes/${year}/${padStart(
         month,
         2,
-        '0'
+        "0"
       )}.json`,
       {
-        headers: { 'X-API-Key': apiKey },
-        json: true,
+        headers: { "X-API-Key": apiKey },
       }
     )
-    .then(data => {
+    .then((response) => {
+      const { data } = response;
       // ProPublica returns 200 OK with an error status code in the body.
-      if (data.status !== 'OK') {
-        throw Object.assign(new Error(data.error || 'Could not get votes'), {
+      if (data.status !== "OK") {
+        throw Object.assign(new Error(data.error || "Could not get votes"), {
           response: data,
         });
       } else {
@@ -36,12 +36,12 @@ module.exports.getMonthStats = (event, context, callback) => {
       }
     })
     .then(
-      data => ({
+      (data) => ({
         statusCode: 200,
         headers,
         body: JSON.stringify(data),
       }),
-      err => ({
+      (err) => ({
         statusCode: 500,
         headers,
         body: JSON.stringify(err.response || { message: err.message }),
